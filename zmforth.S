@@ -682,12 +682,9 @@ _move:  jz %l1, 1f
         jl %l2, 0, 1f
         copy_table %l0, %l1, %l2
         jump _next
-1:      log_shift %l0, -1, %l3
-        log_shift %l1, -1, %l4
+1:      sub %l0, 32768, %l3
+        sub %l1, 32768, %l4
         jl %l3, %l4, _cmovehigh
-        and %l0, 1, %l3
-        and %l1, 1, %l4
-        jle %l3, %l4, _cmovehigh
         jump _cmove
 
 CODE("+!", 0, plusstore)                // ( n|u addr -- )
@@ -807,16 +804,12 @@ CODE("<", 0, lt)
 CODE("u<", 0, ult)
         PS_POP(%l1)
         loadw PSP, 0, %l0
-_ult:   log_shift %l0, -1, %l2
-        log_shift %l1, -1, %l3
-        jl %l2, %l3, 2f
-        jg %l2, %l3, 1f
-        and %l0, 1, %l2
-        and %l1, 1, %l3
-        jl %l2, %l3, 2f
-1:      storew PSP, 0, 0
+_ult:   sub %l0, 32768, %l2
+        sub %l1, 32768, %l3
+        jl %l2, %l3, 1f
+        storew PSP, 0, 0
         jump _next
-2:      storew PSP, 0, -1
+1:      storew PSP, 0, -1
         jump _next
 
 CODE("0>", 0, zerogt)
@@ -839,16 +832,12 @@ CODE(">", 0, gt)
 CODE("u>", 0, ugt)
         PS_POP(%l1)
         loadw PSP, 0, %l0
-_ugt:   log_shift %l0, -1, %l2
-        log_shift %l1, -1, %l3
-        jg %l2, %l3, 2f
-        jl %l2, %l3, 1f
-        and %l0, 1, %l2
-        and %l1, 1, %l3
-        jg %l2, %l3, 2f
-1:      storew PSP, 0, 0
+_ugt:   sub %l0, 32768, %l2
+        sub %l1, 32768, %l3
+        jg %l2, %l3, 1f
+        storew PSP, 0, 0
         jump _next
-2:      storew PSP, 0, -1
+1:      storew PSP, 0, -1
         jump _next
 
 CODE("0<=", 0, zerolteq)
@@ -1040,12 +1029,8 @@ CODE("um/mod+", 0, umslashmodplus)      // ( ud1 u1 -- u2 ud2 )
         or %l1, %l5, %l1
         log_shift %l0, 1, %l0
         jnz %l7, 2f
-        log_shift %l2, -1, %l5
-        log_shift %l3, -1, %l6
-        jl %l5, %l6, 3f
-        jg %l5, %l6, 2f
-        and %l2, 1, %l5
-        and %l3, 1, %l6
+        sub %l2, 32768, %l5
+        sub %l3, 32768, %l6
         jl %l5, %l6, 3f
 2:      sub %l2, %l3, %l2
         inc %l0                         // Safe as low bit is clear
@@ -1075,15 +1060,11 @@ CODE("d+", 0, dplus)                    // ( d1 d2 -- d3 )
         add %l0, %l2, %g0
         add %l1, %l3, %g1
         sub -1, %l2, %l2
-        log_shift %l0, -1, %l4
-        log_shift %l2, -1, %l5
-        jg %l4, %l5, 1f
-        jl %l4, %l5, 2f
-        and %l0, 1, %l4
-        and %l2, 1, %l5
-        jle %l4, %l5, 2f
-1:      inc %g1
-2:      rtrue
+        sub %l0, 32768, %l4
+        sub %l2, 32768, %l5
+        jle %l4, %l5, 1f
+        inc %g1
+1:      rtrue
 
 CODE("um*+", 0, umstarplus)             // ( ud1 u -- ud2 )
         PS_POP(%l2)

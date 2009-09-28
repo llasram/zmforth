@@ -368,7 +368,7 @@ class ZasAssembler(object):
             section.write(struct.pack('>' + width, v))
             return struct.calcsize(width)
         else:
-            raise ZasError("number %r too large for width options %r" %
+            raise ZasError("number %r out of range for width options %r" %
                            (value, widths))
         return
 
