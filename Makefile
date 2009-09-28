@@ -49,7 +49,7 @@ tetris.z5: zmforth.z5 tetris.sav
 	$(ZMERGE) zmforth.z5 tetris.sav $@
 
 tetris.sav: zmforth.z5 tetris.rec
-	$(ZSAV) $^ $@
+	$(ZSAV) $^ $@ tt
 
 zmforth.rec: zmforth.fs
 tools.rec: tools.fs

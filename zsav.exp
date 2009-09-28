@@ -3,6 +3,7 @@
 set zcode [lindex $argv 0]
 set rec [lindex $argv 1]
 set sav [lindex $argv 2]
+set boot [lindex $argv 3]
 
 set timeout -1
 spawn dfrotz "$zcode"
@@ -14,6 +15,10 @@ send -- "$rec\r"
 expect "Do you want MORE prompts? (y/n) >"
 send -- "n\r"
 expect -exact "n\r\n  Do you want MORE prompts? (y/n) >n\r\n  ok\r\n> "
+if {$argc > 3} {
+    send -- "' $boot 'boot !\r"
+    expect -exact "\r\n  ok\r\n> "
+}
 send -- "@save\r"
 expect -re "Please enter a filename .*: "
 send -- "$sav\r"
