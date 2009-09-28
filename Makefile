@@ -53,8 +53,9 @@ tetris.sav: zmforth.z5 tetris.rec
 
 zmforth.rec: zmforth.fs
 tools.rec: tools.fs
-tests.rec: $(TESTS)
 tetris.rec: examples/tetris.fs
+tests.rec: $(TESTS)
+	$(REC) $^ >$@
 
 %.rec: %.fs
 	$(REC) $^ >$@
