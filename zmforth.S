@@ -1175,12 +1175,11 @@ CODE("d<", 0, dlt)                      // ( d1 d2 -- f )
         PS_POP(%l1)
         PS_POP(%l2)
         loadw PSP, 0, %l0
-        jl %l2, %l3, 2f
-        jg %l2, %l3, 1f
-        jl %l0, %l1, 2f
-1:      storew PSP, 0, 0
+        je %l2, %l3, _ult
+        jl %l2, %l3, 1f
+        storew PSP, 0, 0
         jump _next
-2:      storew PSP, 0, -1
+1:      storew PSP, 0, -1
         jump _next
 
 CODE("d>", 0, dgt)                      // ( d1 d2 -- f )
@@ -1188,12 +1187,11 @@ CODE("d>", 0, dgt)                      // ( d1 d2 -- f )
         PS_POP(%l1)
         PS_POP(%l2)
         loadw PSP, 0, %l0
-        jg %l2, %l3, 2f
-        jl %l2, %l3, 1f
-        jg %l0, %l1, 2f
-1:      storew PSP, 0, 0
+        je %l2, %l3, _ugt
+        jg %l2, %l3, 1f
+        storew PSP, 0, 0
         jump _next
-2:      storew PSP, 0, -1
+1:      storew PSP, 0, -1
         jump _next
 
 CODE("du<", 0, dult)                    // ( ud1 ud2 -- f )

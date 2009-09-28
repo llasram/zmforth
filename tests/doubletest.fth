@@ -201,6 +201,12 @@ T{ max-2int -1. D< -> <false> }T
 T{ max-2int min-2int D< -> <false> }T
 T{ max-2int 2DUP -1. D+ D< -> <false> }T
 T{ min-2int 2DUP  1. D+ D< -> <true>  }T
+T{ -1 1 1 1 D< -> <false> }T
+T{ -1 1 1 1 D> -> <true> }T
+T{ 1 -1 1 1 D> -> <false> }T
+T{ 1 -1 1 1 D< -> <true> }T
+T{ -1 -1 1 -1 D> -> <true> }T
+T{ -1 -1 1 -1 D< -> <false> }T
 
 T{ -1. -1. D= -> <true>  }T
 T{ -1.  0. D= -> <false> }T
