@@ -45,10 +45,10 @@
 : ? @ . ;
 : indent 4 spaces ;
 : words ( -- )
-    latest begin
+    base @ hex latest begin
         @ ?dup while
-            cr dup >name over >cfa indent . type
-    repeat space ;
+            cr dup >cfa 4 u.r space dup >name type
+    repeat space base ! ;
 : see-literal cell+ dup @ . ;
 : see-string cell+ count 2dup type + aligned cell- ;
 : see-sliteral .( s" ) see-string .( " ) ;
