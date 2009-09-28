@@ -655,22 +655,24 @@ CODE("cmove", 0, cmove)                 // ( c-addr1 c-addr2 u -- )
         PS_POP(%l1)
         PS_POP(%l0)
 _cmove: store 0, %l3
-1:      je %l3, %l2, _next
-        loadb %l0, %l3, %l4
+        je %l3, %l2, _next
+1:      loadb %l0, %l3, %l4
         storeb %l1, %l3, %l4
         inc %l3
-        jump 1b
+        jne %l3, %l2, 1b
+        jump _next
 
 CODE("cmove>", 0, cmovehigh)            // ( c-addr1 c-addr2 u -- )
         PS_POP(%l2)
         PS_POP(%l1)
         PS_POP(%l0)
 _cmovehigh:
-1:      jz %l2, _next
-        dec %l2
+        jz %l2, _next
+1:      dec %l2
         loadb %l0, %l2, %l3
         storeb %l1, %l2, %l3
-        jump 1b
+        jnz %l2, 1b
+        jump _next
 
 CODE("move", 0, move)                   // ( addr1 addr2 u -- )
         PS_POP(%l2)
