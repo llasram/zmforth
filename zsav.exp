@@ -1,18 +1,28 @@
 #! /usr/bin/expect -f
 
+set zcode [lindex $argv 0]
+set rec [lindex $argv 1]
+set sav [lindex $argv 2]
+
 set timeout -1
-spawn dfrotz zmforth-base.z5
+spawn dfrotz "$zcode"
 match_max 100000
 expect "> "
 send -- "load\r"
 expect -re "Please enter a filename .*: "
-send -- "zmforth.rec\r"
+send -- "$rec\r"
 expect "Do you want MORE prompts? (y/n) >"
 send -- "n\r"
 expect -exact "n\r\n  Do you want MORE prompts? (y/n) >n\r\n  ok\r\n> "
 send -- "@save\r"
 expect -re "Please enter a filename .*: "
-send -- "zmforth.sav\r"
-expect "> "
-send -- "bye\r"
+send -- "$sav\r"
+expect {
+    "Overwrite existing file? " {
+        send -- "y\n"
+        exp_continue
+    } "  ok\r\n> " {
+        send -- "bye\r"
+    }
+}
 expect eof

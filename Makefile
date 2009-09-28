@@ -2,6 +2,7 @@ CPP = cpp
 ANTLR = antlr3
 ZAS = ./zas.py
 REC = ./rec.py
+ZSAV = ./zsav.exp
 ZMERGE = ./zmerge.py
 
 ZAS_STATIC = zas.py opcodes.py zheader.py
@@ -13,19 +14,24 @@ TESTS = tests/tester.fr tests/core.fr tests/coreplustest.fth \
         tests/stringtest.fth tests/doubletest.fth \
         tests/toolstest.fth
 
-all: zmforth.z5 tools.rec
+all: zmforth.z5 zmforth+tools.z5
 
 test: all tests.rec
 	./test.exp
 
 examples: tetris.z5
 
-zmforth.z5: zmforth-base.z5 zmforth.sav
-	$(ZMERGE) zmforth-base.z5 zmforth.sav $@
+zmforth+tools.z5: zmforth.z5 zmforth+tools.sav
+	$(ZMERGE) $^ $@
 
-zmforth.sav: zmforth-base.z5 zmforth.rec zmforth.exp 
-	@rm -f $@
-	./zmforth.exp
+zmforth+tools.sav: zmforth.z5 tools.rec
+	$(ZSAV) $^ $@
+
+zmforth.z5: zmforth-base.z5 zmforth.sav
+	$(ZMERGE) $^ $@
+
+zmforth.sav: zmforth-base.z5 zmforth.rec
+	$(ZSAV) $^ $@
 
 zmforth-base.z5: zmforth.s $(ZAS_SOURCES)
 	$(ZAS) zmforth.s $@
@@ -39,23 +45,18 @@ ZasWalker.py: ZasWalker.g
 zmforth.s: zmforth.S
 	$(CPP) -o $@ $^
 
-zmforth.rec: zmforth.fs
-	$(REC) $^ >$@
-
-tools.rec: tools.fs
-	$(REC) $^ >$@
-
-tests.rec: $(TESTS)
-	$(REC) $^ >$@
-
 tetris.z5: zmforth.z5 tetris.sav
 	$(ZMERGE) zmforth.z5 tetris.sav $@
 
-tetris.sav: zmforth.z5 tetris.rec tetris.exp
-	@rm -f $@
-	./tetris.exp
+tetris.sav: zmforth.z5 tetris.rec
+	$(ZSAV) $^ $@
 
+zmforth.rec: zmforth.fs
+tools.rec: tools.fs
+tests.rec: $(TESTS)
 tetris.rec: examples/tetris.fs
+
+%.rec: %.fs
 	$(REC) $^ >$@
 
 clean:
