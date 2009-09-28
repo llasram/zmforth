@@ -1,0 +1,12 @@
+syntax: glob
+
+*.tokens
+*.pyc
+*.z5
+*.sav
+*.s
+*.rec
+ZasLexer.py
+ZasParser.py
+ZasWalker.py
+Zas__.g
