@@ -1,0 +1,6 @@
+ZmForth! is an ANS Forth implementation for the Z-machine. It provides the
+complete core, double-number, exception, facility, string, and tools word sets,
+and most of the related extension word sets.
+
+The project also includes a new full Z-code assembler and a tool for merging
+Z-machine story files with Quetzal save images, both written in Python.
