@@ -480,7 +480,7 @@ CODE("sp@", 0, spfetch)
 CODE("depth", 0, depth)                 // ( -- +n )
         USER_FETCH(sp0, %l0)
         sub %l0, PSP, %l0
-        log_shift %l0, -1, %l0
+        art_shift %l0, -1, %l0
         PS_PUSH(%l0)
         jump _next
 
